@@ -70,7 +70,6 @@ class BasicLayout extends Component {
               </Breadcrumb> */}
               <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>{children}</div>
             </Content>
-            <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
           </Layout>
         </Layout>
       </div>
