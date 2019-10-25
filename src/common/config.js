@@ -1,4 +1,4 @@
 export default {
-  username: 'lxy',
-  password: '1',
+  username: 'admin',
+  password: 'admin',
 };
