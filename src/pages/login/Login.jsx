@@ -50,7 +50,7 @@ class Login extends Component {
       <div className={styles.root}>
         <div className={styles.loginForm}>
           <Card>
-            <Form className="login-form">
+            <Form>
               <Form.Item>
                 {getFieldDecorator('username', {
                   rules: [{ required: true, message: '请输入你的用户名!' }],
