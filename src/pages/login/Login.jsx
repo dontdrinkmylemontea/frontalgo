@@ -12,18 +12,15 @@ class Login extends Component {
   componentDidMount() {
     const { auth } = this.props;
     if (auth.auth === 1) {
-      console.log('已登录');
       router.push('/family');
     } else {
       const username = getCookie('username');
       const password = getCookie('password');
-      const remember = getCookie('remember');
-      if (remember) {
+      if (username && password) {
         const { setFieldsValue } = this.props.form;
         setFieldsValue({
           username,
           password,
-          remember,
         });
       }
     }
@@ -38,7 +35,6 @@ class Login extends Component {
         if (remember) {
           setCookie('username', username);
           setCookie('password', password);
-          setCookie('remember', true);
         }
         if (checkAuth(username, password)) {
           dispatch({ type: 'auth/setauth', payload: { auth: 1 } });
