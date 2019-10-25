@@ -15,10 +15,13 @@ class BasicLayout extends Component {
   constructor(props) {
     super(props);
     const { dispatch } = this.props;
+    console.log(getCookie('username'));
     if (checkAuth(getCookie('username'), getCookie('password'))) {
+      console.log('checkauth = 1');
       dispatch({ type: 'auth/setauth', payload: { auth: 1 } });
       router.push('/');
     } else {
+      console.log('checkauth = 0');
       dispatch({ type: 'auth/setauth', payload: { auth: -1 } });
     }
   }

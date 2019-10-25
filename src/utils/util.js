@@ -1,3 +1,5 @@
+import config from '@/common/config';
+
 export const formatTime = (date, signal) => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
@@ -41,7 +43,7 @@ export const getCookie = cname => {
 };
 
 export const checkAuth = (username, password) => {
-  if (username === ' ' && password === ' ') {
+  if (username === config.username && password === config.password) {
     return true;
   }
 };

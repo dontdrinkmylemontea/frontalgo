@@ -1,7 +1,7 @@
 export default {
   namespage: 'auth',
   state: {
-    auth: {},
+    auth: -1,
   },
   effects: {},
   reducers: {

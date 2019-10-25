@@ -1,8 +1,8 @@
 export default [
   {
     index: 0,
-    name: 'home',
-    path: '/',
-    icon: 'home',
+    name: '数据库',
+    path: '/family',
+    icon: 'database',
   },
 ];
