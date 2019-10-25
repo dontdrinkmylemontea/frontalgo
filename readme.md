@@ -12,4 +12,7 @@
 
 #### 用户名和密码
 默认：admin/admin
+
 配置：修改src/common/config.js
+
+
