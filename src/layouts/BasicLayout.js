@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
 import MenuData from './MenuData';
-import { Layout, Menu, Icon, message } from 'antd';
+import { Layout, Menu, Icon } from 'antd';
 import { getCookie, setCookie, checkAuth } from '@/utils/util';
 const { Header, Sider, Content } = Layout;
 
