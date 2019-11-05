@@ -14,14 +14,25 @@ const { Header, Sider, Content } = Layout;
 class BasicLayout extends Component {
   constructor(props) {
     super(props);
+    this.checkAuth();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.auth.auth !== this.props.auth.auth) {
+      this.checkAuth();
+    }
+  }
+
+  checkAuth = () => {
     const { dispatch } = this.props;
     if (checkAuth(getCookie('username'), getCookie('password'))) {
       dispatch({ type: 'auth/setauth', payload: { auth: 1 } });
-      router.push('/');
+      // router.push('/');
     } else {
       dispatch({ type: 'auth/setauth', payload: { auth: -1 } });
+      router.push('/login');
     }
-  }
+  };
 
   onClickMenu = ({ key }) => {
     router.push(MenuData.filter(data => String(data.index) === key)[0].path);
@@ -39,7 +50,8 @@ class BasicLayout extends Component {
     const { children, history, auth } = this.props;
     const { pathname } = history.location;
     if (auth.auth === -1 && pathname !== '/login') {
-      router.push('/login');
+      // router.push('/login');
+      return null;
     }
     return pathname !== '/login' ? (
       <div className={styles.normal}>

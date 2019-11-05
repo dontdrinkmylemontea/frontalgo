@@ -4,6 +4,9 @@ import { Form, Input, Icon, Checkbox, Button, Card } from 'antd';
 import { setCookie, checkAuth, getCookie } from 'utils';
 import router from 'umi/router';
 import styles from './Login.less';
+import menuData from '@/layouts/MenuData';
+
+const defautHomeMenu = menuData[0].path;
 
 @connect(({ auth }) => ({
   auth,
@@ -12,7 +15,7 @@ class Login extends Component {
   componentDidMount() {
     const { auth } = this.props;
     if (auth.auth === 1) {
-      router.push('/family');
+      router.push(defautHomeMenu);
     } else {
       const username = getCookie('username');
       const password = getCookie('password');
@@ -38,7 +41,7 @@ class Login extends Component {
         }
         if (checkAuth(username, password)) {
           dispatch({ type: 'auth/setauth', payload: { auth: 1 } });
-          router.replace('/family');
+          router.replace(defautHomeMenu);
         }
       }
     });

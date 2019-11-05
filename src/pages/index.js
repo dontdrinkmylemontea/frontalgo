@@ -1,3 +1,7 @@
+import React from 'react';
 import Redirect from 'umi/redirect';
+import menuData from '@/layouts/MenuData';
 
-export default <Redirect to="/login" />;
+const defautHomeMenu = menuData[0].path;
+
+export default () => <Redirect to={defautHomeMenu} />;
