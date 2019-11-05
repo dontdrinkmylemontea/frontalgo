@@ -1,8 +1,8 @@
 export default [
   {
-    index: 0,
-    name: '数据库',
-    path: '/family',
-    icon: 'database',
+    index: 1,
+    name: '二分搜索',
+    path: '/binarysearch',
+    icon: 'rocket',
   },
 ];
