@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
-import { Typography, Divider } from 'antd';
+import FunctionCard from 'components/functionCard';
 import styles from './BinarySearch.less';
 
-const { Title, Paragraph, Text } = Typography;
+const binarySearch = source => {
+  return source;
+};
 
-// @connect(({ loading }) => ({
-//   loadingData: loading,
-// }))
+const arr = [1, 4, 5, 6, 8];
+
 class BinarySearch extends Component {
   render() {
-    // const { } = this.props;
     return (
       <div className={styles.root}>
-        <Typography>
-          <Title>二分搜索</Title>
-          <Paragraph>二分搜索</Paragraph>
-        </Typography>
+        <FunctionCard title="二分搜索" algo={binarySearch} array={arr} />
       </div>
     );
   }

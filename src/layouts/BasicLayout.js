@@ -86,7 +86,7 @@ class BasicLayout extends Component {
               <a onClick={this.logout}>退出登录</a>
             </Header>
             <Content style={{ margin: '0 16px' }}>
-              <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+              <div style={{ padding: 24, background: '#fff', minHeight: 'calc(100vh - 84px)' }}>
                 {auth.auth === 1 ? children : null}
               </div>
             </Content>
