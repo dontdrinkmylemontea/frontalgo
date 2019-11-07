@@ -4,7 +4,13 @@ import styles from './FunctionCard.less';
 
 const algoWrapper = algo => array => {
   const startTime = new Date().getTime();
-  const result = algo(array);
+  const algoResult = algo(array);
+  let result;
+  if (Array.isArray(algoResult)) {
+    result = algoResult.join(' ');
+  } else {
+    result = algoResult;
+  }
   const endTime = new Date().getTime();
   const timeSpent = endTime - startTime;
   return { timeSpent, result };
