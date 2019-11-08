@@ -52,3 +52,47 @@ const formatNumber = n => {
   n = n.toString();
   return n[1] ? n : '0' + n;
 };
+
+// 生成随机数
+export const getRandomNumber = (max = 1000, min = 0) =>
+  Number(min + (Math.random() * (max - min)).toFixed());
+
+// 生成无序队列
+export const arrayGenerator = (arrLength = 10, largest = 1000, minimam = 0) =>
+  new Array(arrLength).map(() => getRandomNumber(largest, minimam));
+
+// 插入法生成有序队列
+export const sortedArrayGenerator = (arrLength = 10) => {
+  const arr = new Array(arrLength);
+  let counter = 0;
+  for (let i = 0; i < arrLength; i++) {
+    const newNumber = getRandomNumber(10000);
+    for (let j = 0; j <= counter; j++) {
+      if (!arr[j]) {
+        arr[j] = newNumber;
+        counter++;
+        break;
+      }
+      if (arr[j] <= newNumber) continue;
+      for (let k = counter; k > j; k--) {
+        arr[k] = arr[k - 1];
+      }
+      arr[j] = newNumber;
+      counter++;
+      break;
+    }
+  }
+  return arr;
+};
+
+export const easySorted = (arrLength = 10) => {
+  const arr = new Array(arrLength);
+  for (let i = 0; i < arrLength; i++) {
+    if (i === 0) {
+      arr[i] = 0;
+      continue;
+    }
+    arr[i] = arr[i - 1] + 2;
+  }
+  return arr;
+};

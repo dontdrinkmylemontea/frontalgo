@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Icon } from 'antd';
+import { Card, Icon, Spin } from 'antd';
 import styles from './FunctionCard.less';
 
 const algoWrapper = algo => (...args) => {
@@ -22,6 +22,19 @@ const LabelText = ({ label, value }) => (
   </div>
 );
 
+const renderLongText = (arr, splitter = ',') => {
+  if (arr && arr.length > 0) {
+    const text = arr.join(splitter);
+    if (text.length >= 80) {
+      return <span title={arr.join(splitter).slice(0, 512)}>{text.slice(0, 80) + '……'}</span>;
+    } else {
+      return text;
+    }
+  } else {
+    return '--';
+  }
+};
+
 class FunctionCard extends Component {
   state = {
     codeVisible: false,
@@ -37,20 +50,22 @@ class FunctionCard extends Component {
     this.setState({
       running: true,
     });
-    const { algo, array, args } = this.props;
-    let result = {};
-    if (algo) {
-      const algoTimmer = algoWrapper(algo);
-      result = args ? algoTimmer(...args) : algoTimmer(array);
-    }
-    this.setState({
-      result,
-      running: false,
-    });
+    setTimeout(() => {
+      const { algo, array, args } = this.props;
+      let result = {};
+      if (algo && (args || array)) {
+        const algoTimmer = algoWrapper(algo);
+        result = args ? algoTimmer(...args) : algoTimmer(array);
+      }
+      this.setState({
+        result,
+        running: false,
+      });
+    }, 100);
   };
 
   render() {
-    const { title, children, algo, array, args } = this.props;
+    const { title, children, algo, array, args, loading } = this.props;
     const {
       codeVisible,
       result: { value, timeSpent },
@@ -58,45 +73,47 @@ class FunctionCard extends Component {
     } = this.state;
     return (
       <div className={styles.root}>
-        <Card
-          style={{ width: '700px' }}
-          actions={[
-            <Icon
-              type={running ? 'loading' : 'caret-right'}
-              key="caret-right"
-              style={{ color: running ? '#1890ff' : 'auto' }}
-              onClick={this.runArgs}
-            />,
-            <Icon
-              type={codeVisible ? 'eye-invisible' : 'eye'}
-              key="eye"
-              onClick={() => this.setState(pre => ({ codeVisible: !pre.codeVisible }))}
-            />,
-          ]}
-          title={title}
-        >
-          <LabelText
-            label={'入参'}
-            value={'[ ' + args ? (args || []).join(' ') : (array || []).join(',') + ' ]'}
-          />
-          {children}
-          <LabelText label={'耗时'} value={timeSpent + ' ms'} />
-          <LabelText label={'执行结果'} value={value} />
-        </Card>
-        {algo && codeVisible ? (
-          <Card>
-            <div
-              className={styles.sourceCode}
-              dangerouslySetInnerHTML={{
-                __html: algo
-                  .toString()
-                  .replace(/\n/g, '<br/>')
-                  .replace(/\t/g, '&nbsp;&nbsp;&nbsp;')
-                  .replace(/ /g, '&nbsp;'),
-              }}
-            ></div>
+        <Spin spinning={loading}>
+          <Card
+            // style={{ width: '700px' }}
+            actions={[
+              <Icon
+                type={running ? 'loading' : 'caret-right'}
+                key="caret-right"
+                style={{ color: running ? '#1890ff' : 'rgba(0, 0, 0, 0.45)' }}
+                onClick={this.runArgs}
+              />,
+              <Icon
+                type={codeVisible ? 'eye-invisible' : 'eye'}
+                key="eye"
+                onClick={() => this.setState(pre => ({ codeVisible: !pre.codeVisible }))}
+              />,
+            ]}
+            title={title}
+          >
+            <LabelText
+              label={'入参'}
+              value={'[ ' + args ? renderLongText(args, ' ') : renderLongText(array) + ' ]'}
+            />
+            {children}
+            <LabelText label={'耗时'} value={timeSpent + ' ms'} />
+            <LabelText label={'执行结果'} value={value} />
           </Card>
-        ) : null}
+          {algo && codeVisible ? (
+            <Card>
+              <div
+                className={styles.sourceCode}
+                dangerouslySetInnerHTML={{
+                  __html: algo
+                    .toString()
+                    .replace(/\n/g, '<br/>')
+                    .replace(/\t/g, '&nbsp;&nbsp;&nbsp;')
+                    .replace(/ /g, '&nbsp;'),
+                }}
+              ></div>
+            </Card>
+          ) : null}
+        </Spin>
       </div>
     );
   }
