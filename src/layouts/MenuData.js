@@ -7,14 +7,20 @@ export default [
   },
   {
     index: 2,
-    name: '算法比较',
+    name: '高级瀑布流',
     path: '/comparison',
     icon: 'star',
   },
   {
     index: 3,
-    name: 'Radio测试',
+    name: '级联选择框',
     path: '/radiotest',
-    icon: 'check-circle',
+    icon: 'container',
+  },
+  {
+    index: 4,
+    name: '地图渲染',
+    path: '/radiotest',
+    icon: 'heart',
   },
 ];

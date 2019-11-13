@@ -10,7 +10,7 @@ export default {
         antd: true,
         dva: true,
         dynamicImport: false,
-        title: 'hey!:)',
+        title: '实用编程',
         dll: false,
 
         routes: {
