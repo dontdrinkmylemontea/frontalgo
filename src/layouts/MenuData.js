@@ -7,7 +7,7 @@ export default [
   },
   {
     index: 2,
-    name: '高级瀑布流',
+    name: '自适应瀑布流',
     path: '/comparison',
     icon: 'star',
   },
