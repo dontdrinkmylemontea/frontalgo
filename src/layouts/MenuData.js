@@ -8,7 +8,7 @@ export default [
   {
     index: 2,
     name: '自适应瀑布流',
-    path: '/comparison',
+    path: '/waterfall',
     icon: 'star',
   },
   {

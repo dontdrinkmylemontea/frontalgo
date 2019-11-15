@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 // import { connect } from 'dva';
 // import {Spin} from 'antd';
-// import styles from './Comparison.less';
+// import styles from './WaterFall.less';
 
 // @connect(({ loading }) => ({
 //   loadingData: loading,
 // }))
-class Comparison extends Component {
+class WaterFall extends Component {
   render() {
     // const { } = this.props;
-    return <div></div>;
+    return <div>page: WaterFall</div>;
   }
 }
-export default Comparison;
+export default WaterFall;
