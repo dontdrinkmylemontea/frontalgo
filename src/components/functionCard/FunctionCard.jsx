@@ -1,20 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Icon, Spin } from 'antd';
+import { algosWorker } from '@/utils/workerhelper.js';
 import styles from './FunctionCard.less';
-
-const algoWrapper = algo => (...args) => {
-  const startTime = new Date().getTime();
-  const algoResult = algo(...args);
-  let result;
-  if (Array.isArray(algoResult)) {
-    result = algoResult.join(' ');
-  } else {
-    result = algoResult;
-  }
-  const endTime = new Date().getTime();
-  const timeSpent = endTime - startTime;
-  return { timeSpent, value: result };
-};
 
 const LabelText = ({ label, value }) => (
   <div>
@@ -42,26 +29,30 @@ class FunctionCard extends Component {
     running: false,
   };
 
+  worker = null;
+
   componentDidMount() {
-    this.runArgs();
+    this.runWorker();
   }
 
-  runArgs = () => {
+  componentDidUpdate(prevProps) {
+    if (this.props.args !== prevProps.args) {
+      this.runWorker();
+    }
+  }
+
+  runWorker = () => {
+    const { algo, args } = this.props;
+    algosWorker(args, algo, this.start, this.end);
+  };
+
+  start = () => this.setState({ running: true });
+
+  end = data => {
     this.setState({
-      running: true,
+      running: false,
+      result: data,
     });
-    setTimeout(() => {
-      const { algo, array, args } = this.props;
-      let result = {};
-      if (algo && (args || array)) {
-        const algoTimmer = algoWrapper(algo);
-        result = args ? algoTimmer(...args) : algoTimmer(array);
-      }
-      this.setState({
-        result,
-        running: false,
-      });
-    }, 100);
   };
 
   render() {
@@ -75,13 +66,12 @@ class FunctionCard extends Component {
       <div className={styles.root}>
         <Spin spinning={loading}>
           <Card
-            // style={{ width: '700px' }}
             actions={[
               <Icon
                 type={running ? 'loading' : 'caret-right'}
                 key="caret-right"
                 style={{ color: running ? '#1890ff' : 'rgba(0, 0, 0, 0.45)' }}
-                onClick={this.runArgs}
+                onClick={this.runWorker}
               />,
               <Icon
                 type={codeVisible ? 'eye-invisible' : 'eye'}

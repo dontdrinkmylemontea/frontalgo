@@ -3,8 +3,10 @@ import FunctionCard from 'components/functionCard';
 import { Radio, Button } from 'antd';
 import styles from './BinarySearch.less';
 import { getRandomNumber, easySorted } from 'utils';
+import { arrayGeneratorWorker } from '@/utils/workerhelper.js';
 
 const binarySearch = (target, source) => {
+  if (!source || !target) return;
   function search(start, end, target, source) {
     const middleIndex = Number(Number(Number((end - start) / 2) + Number(start)).toFixed());
     const middleValue = source[middleIndex];
@@ -17,9 +19,11 @@ const binarySearch = (target, source) => {
 };
 
 const foreachSearch = (target, source) => {
+  if (!source || !target) return;
   for (let i = 0; i < source.length; i++) {
     if (target === source[i]) return i;
   }
+  return '没有找到';
 };
 
 const argLengths = [1000, 10000, 100000, 1000000, 10000000];
@@ -36,21 +40,18 @@ class BinarySearch extends Component {
   }
 
   generageArgs = () => {
-    this.setState(
-      {
-        arrLoading: true,
-      },
-      () => {
-        setTimeout(() => {
-          const { length } = this.state;
-          const array = easySorted(length);
-          this.setState({
-            args: [array[getRandomNumber(length)], array],
-            arrLoading: false,
-          });
-        }, 100);
-      },
-    );
+    const { length } = this.state;
+    arrayGeneratorWorker(length, this.startLoading, this.endLoading);
+  };
+
+  startLoading = () => this.setState({ arrLoading: true });
+
+  endLoading = data => {
+    const { length } = this.state;
+    this.setState({
+      arrLoading: false,
+      args: [data[getRandomNumber(length)], data],
+    });
   };
 
   setLength = e => {
@@ -59,9 +60,7 @@ class BinarySearch extends Component {
         length: e.target.value,
         arrLoading: true,
       },
-      () => {
-        this.generageArgs();
-      },
+      this.generageArgs,
     );
   };
 
@@ -95,7 +94,8 @@ class BinarySearch extends Component {
           </div>
         </div>
         <div className={styles.radios}>
-          结论：虽然顺序查找和二分搜索的时间复杂度差距很大，但是在10万以下的数据量查找时，两者的差距并不大。要求前端处理10万以上的数据量的情况并不多，因此这个不太实用。
+          <b>结论：</b>
+          虽然顺序查找和二分搜索的时间复杂度差距很大，但是在10万以下的数据量查找时，两者的差距并不大。要求前端处理10万以上的数据量的情况并不多，因此这个不太实用。
         </div>
       </div>
     );

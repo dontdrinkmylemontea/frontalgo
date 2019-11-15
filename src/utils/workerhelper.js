@@ -5,7 +5,7 @@ export const generateWebWorker = algoFunc => {
   return worker;
 };
 
-export const arrayGeneratorWorder = (arrLength = 10, startCall, endCall) => {
+export const arrayGeneratorWorker = (arrLength = 10, startCall, endCall) => {
   if (startCall) {
     startCall();
   }
@@ -24,6 +24,30 @@ export const arrayGeneratorWorder = (arrLength = 10, startCall, endCall) => {
   };
   const worker = generateWebWorker(generateArray);
   worker.postMessage(arrLength);
+  worker.onmessage = ({ data }) => {
+    if (endCall) {
+      endCall(data);
+    }
+    worker.terminate();
+  };
+};
+
+export const algosWorker = (args, algo, startCall, endCall) => {
+  if (startCall) {
+    startCall();
+  }
+  const generateArray = () => {
+    self.onmessage = ({ data }) => {
+      const startTime = new Date().getTime();
+      const argument = data[0];
+      const algoStr = data[1];
+      const result = eval(algoStr)(...(argument || []));
+      const endTime = new Date().getTime();
+      self.postMessage({ timeSpent: endTime - startTime, value: result });
+    };
+  };
+  const worker = generateWebWorker(generateArray);
+  worker.postMessage([args, algo.toString()]);
   worker.onmessage = ({ data }) => {
     if (endCall) {
       endCall(data);
