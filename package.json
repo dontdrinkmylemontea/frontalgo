@@ -2,11 +2,10 @@
   "private": true,
   "scripts": {
     "start": "umi dev",
-    "build": "umi build",
+    "build": "umi build && pm2 start /home/frontalgo/dist/index.js --name frontalgo",
     "test": "umi test",
     "lint": "eslint --ext .js src mock tests",
-    "precommit": "lint-staged",
-    "prd": "umi build && pm2 start dist/index.js"
+    "precommit": "lint-staged"
   },
   "dependencies": {
     "antd": "^3.19.5",
