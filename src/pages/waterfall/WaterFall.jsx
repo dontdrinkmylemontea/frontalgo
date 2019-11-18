@@ -2,40 +2,31 @@ import React, { Component } from 'react';
 import { getRandomPicture } from '@/utils/picture';
 // import { connect } from 'dva';
 // import {Spin} from 'antd';
-// import styles from './WaterFall.less';
+import styles from './WaterFall.less';
 
-const count = 5;
+const columnNum = 3;
 
 // @connect(({ loading }) => ({
 //   loadingData: loading,
 // }))
 class WaterFall extends Component {
   state = {
-    images: [],
+    images: [[], [], []],
   };
 
   componentDidMount() {
-    for (let i = 0; i < count; i += 1) {
-      getRandomPicture(src => this.setPictureSrc(i, src), this.setLoading);
+    for (let i = 0; i < columnNum; i += 1) {
+      getRandomPicture(src => this.setPictureSrc(i, src));
+      getRandomPicture(src => this.setPictureSrc(i, src));
+      getRandomPicture(src => this.setPictureSrc(i, src));
     }
   }
-
-  setLoading = index => {
-    this.setState(({ images }) => {
-      const newImages = [...images];
-      const image = { loading: true };
-      newImages[index] = image;
-      return {
-        images: newImages,
-      };
-    });
-  };
 
   setPictureSrc = (index, src) => {
     this.setState(({ images }) => {
       const newImages = [...images];
-      const image = { loading: false, src };
-      newImages[index] = image;
+      const imageColumn = newImages[index];
+      imageColumn.push(src);
       return {
         images: newImages,
       };
@@ -45,10 +36,14 @@ class WaterFall extends Component {
   render() {
     const { images } = this.state;
     return (
-      <div>
-        {images.map((item = {}, index) =>
-          item.src ? <img src={item.src} key={index} alt={`pic-${index}`} /> : null,
-        )}
+      <div className={styles.root}>
+        {images.map((column, columnIndex) => (
+          <div className={styles.column} key={columnIndex}>
+            {column.map((src, index) =>
+              src ? <img src={src} key={index} alt={`pic-${index}`} /> : null,
+            )}
+          </div>
+        ))}
       </div>
     );
   }
