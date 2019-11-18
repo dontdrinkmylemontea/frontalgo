@@ -1,28 +1,46 @@
 import https from 'https';
-// 随机图片请求地址
-const imgGettingUrl =
-  'https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture';
+const getKey = 'Cat';
+// const getKey = 'BingEverydayWallpaperPicture';
+
+const imgGettingUrl = `https://uploadbeta.com/api/pictures/random/?key=${getKey}`;
 
 // 获取随机图片
 export const getRandomPicture = (callback, preCall) => {
   if (preCall) {
     preCall();
   }
-  https.get(imgGettingUrl, response => {
-    const datas = [];
-    let size = 0;
-    response.on('data', d => {
-      datas.push(d);
-      size += d.length;
-    });
 
-    response.on('end', () => {
-      const buff = Buffer.concat(datas, size);
-      const pic = buff.toString('base64');
-      const src = `data:image/jpeg;base64,${pic}`;
-      if (callback) {
-        callback(src);
-      }
-    });
-  });
+  let counter = 0;
+  const maxRetryTimes = 5;
+
+  function httpsGet() {
+    https
+      .get(imgGettingUrl, response => {
+        const datas = [];
+        let size = 0;
+        counter += 1;
+        response.on('data', d => {
+          datas.push(d);
+          size += d.length;
+        });
+
+        response.on('end', () => {
+          const buff = Buffer.concat(datas, size);
+          const pic = buff.toString('base64');
+          const src = `data:image/jpeg;base64,${pic}`;
+          if (callback) {
+            callback(src);
+          }
+        });
+      })
+      .on('error', e => {
+        if (counter < maxRetryTimes) {
+          setTimeout(() => {
+            httpsGet();
+          }, 300);
+        }
+      });
+  }
+
+  httpsGet();
 };
