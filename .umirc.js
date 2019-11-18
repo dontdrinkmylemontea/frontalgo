@@ -10,7 +10,7 @@ export default {
         antd: true,
         dva: true,
         dynamicImport: false,
-        title: '实用编程',
+        title: 'FrontAlgo',
         dll: false,
 
         routes: {
