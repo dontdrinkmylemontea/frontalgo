@@ -31,4 +31,3 @@ export default {
     utils: path.resolve(__dirname, './src/utils/util.js'),
   },
 };
-// 1 2 3 4
