@@ -14,32 +14,32 @@ export const getRandomPicture = (callback, preCall) => {
   const maxRetryTimes = 5;
 
   function httpsGet() {
-    https
-      .get(imgGettingUrl, response => {
-        const datas = [];
-        let size = 0;
-        counter += 1;
-        response.on('data', d => {
-          datas.push(d);
-          size += d.length;
-        });
+    const request = https.get(imgGettingUrl, response => {
+      const datas = [];
+      let size = 0;
+      counter += 1;
+      response.on('data', d => {
+        datas.push(d);
+        size += d.length;
+      });
 
-        response.on('end', () => {
-          const buff = Buffer.concat(datas, size);
-          const pic = buff.toString('base64');
-          const src = `data:image/jpeg;base64,${pic}`;
-          if (callback) {
-            callback(src);
-          }
-        });
-      })
-      .on('error', e => {
-        if (counter < maxRetryTimes) {
-          setTimeout(() => {
-            httpsGet();
-          }, 300);
+      response.on('end', () => {
+        const buff = Buffer.concat(datas, size);
+        const pic = buff.toString('base64');
+        const src = `data:image/jpeg;base64,${pic}`;
+        if (callback) {
+          callback(src);
         }
       });
+    });
+
+    request.on('error', e => {
+      if (counter < maxRetryTimes) {
+        setTimeout(() => {
+          httpsGet();
+        }, 300);
+      }
+    });
   }
 
   httpsGet();
