@@ -12,6 +12,12 @@ export default [
     icon: 'star',
   },
   {
+    index: 5,
+    name: '测试iframe',
+    path: '/iframe',
+    icon: 'experiment',
+  },
+  {
     index: 3,
     name: '级联选择框',
     path: '/radiotest',
