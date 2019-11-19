@@ -12,8 +12,7 @@ const { Header, Sider, Content } = Layout;
   auth,
 }))
 class BasicLayout extends Component {
-  constructor(props) {
-    super(props);
+  componentDidMount() {
     this.checkAuth();
   }
 
@@ -27,7 +26,6 @@ class BasicLayout extends Component {
     const { dispatch } = this.props;
     if (checkAuth(getCookie('username'), getCookie('password'))) {
       dispatch({ type: 'auth/setauth', payload: { auth: 1 } });
-      // router.push('/');
     } else {
       dispatch({ type: 'auth/setauth', payload: { auth: -1 } });
       router.push('/login');
@@ -50,7 +48,7 @@ class BasicLayout extends Component {
     const { children, history, auth } = this.props;
     const { pathname } = history.location;
     if (auth.auth === -1 && pathname !== '/login') {
-      // router.push('/login');
+      router.push('/login');
       return null;
     }
     return pathname !== '/login' ? (
