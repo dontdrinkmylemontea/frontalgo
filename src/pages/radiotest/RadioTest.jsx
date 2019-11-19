@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 class RadioTest extends Component {
   render() {
     // const { } = this.props;
-    return <div>测试页面测试页面</div>;
+    return <div>测试页面测试页面 测试修改测试页面测试修改测试页面！</div>;
   }
 }
 export default RadioTest;
