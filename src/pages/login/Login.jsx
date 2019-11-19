@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Form, Input, Icon, Checkbox, Button, Card } from 'antd';
+import { Form, Input, Icon, Button, Card } from 'antd';
 import { setCookie, checkAuth, getCookie } from 'utils';
 import router from 'umi/router';
 import styles from './Login.less';
@@ -34,11 +34,9 @@ class Login extends Component {
     const { validateFields } = this.props.form;
     validateFields((err, values) => {
       if (!err) {
-        const { username, password, remember } = values;
-        if (remember) {
-          setCookie('username', username);
-          setCookie('password', password);
-        }
+        const { username, password } = values;
+        setCookie('username', username);
+        setCookie('password', password);
         if (checkAuth(username, password)) {
           dispatch({ type: 'auth/setauth', payload: { auth: 1 } });
           router.replace(defautHomeMenu);
@@ -78,10 +76,6 @@ class Login extends Component {
                 )}
               </Form.Item>
               <Form.Item>
-                {getFieldDecorator('remember', {
-                  valuePropName: 'checked',
-                  initialValue: true,
-                })(<Checkbox>记住登录状态</Checkbox>)}
                 <Button type="primary" onClick={this.handleSubmit} className={styles.loginButton}>
                   登录
                 </Button>
