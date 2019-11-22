@@ -13,7 +13,7 @@ const initArray = (initItem = 0) => {
   }
   return newArr;
 };
-// 1 2 3
+// 1 2 3 4
 class WaterFall extends Component {
   constructor(props) {
     super(props);
