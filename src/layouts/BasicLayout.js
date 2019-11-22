@@ -62,6 +62,7 @@ class BasicLayout extends Component {
               defaultSelectedKeys={MenuData.filter(data => data.path === pathname).map(data =>
                 String(data.index),
               )}
+              style={{ width: '200px', position: 'fixed' }}
               mode="inline"
             >
               {MenuData.map(menu => (

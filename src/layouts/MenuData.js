@@ -7,9 +7,9 @@ export default [
   },
   {
     index: 2,
-    name: '自适应瀑布流',
+    name: '吸猫处',
     path: '/waterfall',
-    icon: 'star',
+    icon: 'crown',
   },
   // {
   //   index: 5,
