@@ -4,7 +4,7 @@ import styles from './WaterFall.less';
 import InfiniteScroll from 'react-infinite-scroller';
 import Loader from './Loader';
 
-const columnNum = 3;
+const columnNum = 4;
 
 const initArray = (initItem = 0) => {
   const newArr = [];
@@ -13,7 +13,6 @@ const initArray = (initItem = 0) => {
   }
   return newArr;
 };
-// 1 2 3 4
 class WaterFall extends Component {
   constructor(props) {
     super(props);
@@ -31,23 +30,36 @@ class WaterFall extends Component {
     this.columnHeight[column] += e.currentTarget.height;
   };
 
+  imgOnError = () => {
+    this.currentLoaded += 1;
+  };
+
   onLoadMore = () => {
     console.log('触发了load more');
     this.multipleLoad(3);
   };
 
   multipleLoad = number => {
+    if (number <= 0) return;
     if (this.expectd !== this.currentLoaded) {
+      // 如果未加载完，不继续加载
       setTimeout(() => {
         this.multipleLoad(number);
       }, 1000);
       return;
-    } // 如果未加载完，不继续加载
-    this.expectd += number;
-    console.log(`继续加载${number}张图片`, this.currentLoaded, this.expectd);
-    for (let i = 0; i < number; i += 1) {
-      getCattyPic(src => this.onGettingSrc((this.lastFillColumn += 1) % columnNum, src));
     }
+    this.expectd += 1;
+    console.log(`number = ${number}`, this.currentLoaded, this.expectd, this.columnHeight);
+    let minIndex = 0;
+    let minVal = this.columnHeight[0];
+    for (let i = 0; i < this.columnHeight.length; i += 1) {
+      if (this.columnHeight[i] < minVal) {
+        minIndex = i;
+        minVal = this.columnHeight[i];
+      }
+    }
+    getCattyPic(src => this.onGettingSrc(minIndex, src));
+    this.multipleLoad(number - 1);
   };
 
   onGettingSrc = (index, src) => {
@@ -81,6 +93,7 @@ class WaterFall extends Component {
                       key={index}
                       alt={`pic-${index}`}
                       onLoad={e => this.imgOnLoad(e, columnIndex)}
+                      onError={() => this.imgOnError()}
                     />
                   ) : null,
                 )}
