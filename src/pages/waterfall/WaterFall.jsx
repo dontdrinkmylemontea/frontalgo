@@ -30,8 +30,14 @@ class WaterFall extends Component {
     this.columnHeight[column] += e.currentTarget.height;
   };
 
-  imgOnError = () => {
-    this.currentLoaded += 1;
+  imgOnError = (column, index) => {
+    this.expectd -= 1;
+    this.setState(({ images }) => {
+      images[column][index] = null;
+      return {
+        images,
+      };
+    });
   };
 
   onLoadMore = () => {
@@ -84,7 +90,6 @@ class WaterFall extends Component {
                 className={styles.column}
                 style={{ width: `${100 / columnNum}%` }}
                 key={columnIndex}
-                id={`column-${columnIndex}`}
               >
                 {column.map((src, index) =>
                   src ? (
@@ -93,7 +98,7 @@ class WaterFall extends Component {
                       key={index}
                       alt={`pic-${index}`}
                       onLoad={e => this.imgOnLoad(e, columnIndex)}
-                      onError={() => this.imgOnError()}
+                      onError={() => this.imgOnError(columnIndex, index)}
                     />
                   ) : null,
                 )}
