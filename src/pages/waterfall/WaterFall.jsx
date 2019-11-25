@@ -41,7 +41,6 @@ class WaterFall extends Component {
   };
 
   onLoadMore = () => {
-    console.log('触发了load more');
     this.multipleLoad(3);
   };
 
@@ -55,7 +54,6 @@ class WaterFall extends Component {
       return;
     }
     this.expectd += 1;
-    console.log(`number = ${number}`, this.currentLoaded, this.expectd, this.columnHeight);
     let minIndex = 0;
     let minVal = this.columnHeight[0];
     for (let i = 0; i < this.columnHeight.length; i += 1) {
