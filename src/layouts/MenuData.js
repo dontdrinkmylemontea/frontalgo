@@ -12,6 +12,12 @@ export default [
     icon: 'crown',
   },
   {
+    index: 4,
+    name: '平面查询',
+    path: '/tree',
+    icon: 'book',
+  },
+  {
     index: 3,
     name: '友情链接',
     path: '/friend',
