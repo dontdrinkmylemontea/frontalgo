@@ -23,9 +23,6 @@ function generatePoints(count) {
   return { arr, quadTree };
 }
 
-// @connect(({ loading }) => ({
-//   loadingData: loading,
-// }))
 class Tree extends Component {
   constructor(props) {
     super(props);
@@ -42,7 +39,6 @@ class Tree extends Component {
       points: arr,
     });
     this.quadTree = quadTree;
-    console.log('quadTree = ', quadTree);
   }
 
   componentWillUnmount() {
@@ -52,7 +48,7 @@ class Tree extends Component {
   mouseMoveHandler = ({ layerX: x, layerY: y }) => {
     const mouse = document.getElementById('mouse');
     if (mouse) {
-      mouse.style.transform = `translate(${x - mouseRange}px, ${y - mouseRange}px)`;
+      mouse.style.transform = `translate(${x - mouseRange + 4}px, ${y - mouseRange + 4}px)`;
     }
     if (!this.quadTree) return;
     const points = this.quadTree.getPointsByCircle(new Point(x, y), mouseRange);
@@ -61,6 +57,8 @@ class Tree extends Component {
         const pointdom = document.getElementById(p.id);
         if (pointdom) {
           pointdom.style.backgroundColor = 'white';
+          pointdom.style.width = '5px';
+          pointdom.style.height = '5px';
         }
       });
     }
@@ -69,6 +67,8 @@ class Tree extends Component {
         const pointdom = document.getElementById(p.id);
         if (pointdom) {
           pointdom.style.backgroundColor = 'yellow';
+          pointdom.style.width = '10px';
+          pointdom.style.height = '10px';
         }
       });
     }
@@ -88,23 +88,34 @@ class Tree extends Component {
     return (
       <div
         className={styles.root}
-        style={{ width: `${background.width + 10}px`, height: `${background.height + 10}px` }}
-        onMouseEnter={this.addListener}
-        onMouseLeave={this.removeListener}
+        style={{
+          width: `${background.width + 10}px`,
+        }}
       >
-        {points.map(({ x, y, id }, index) => (
-          <div
-            id={id}
-            className={styles.point}
-            key={index}
-            style={{ left: `${x}px`, top: `${y}px` }}
-          ></div>
-        ))}
         <div
-          id="mouse"
-          style={{ width: `${mouseRange * 2}px`, height: `${mouseRange * 2}px` }}
-          className={styles.mouse}
-        ></div>
+          className={styles.container}
+          style={{ height: `${background.height + 10}px` }}
+          onMouseEnter={this.addListener}
+          onMouseLeave={this.removeListener}
+        >
+          {points.map(({ x, y, id }, index) => (
+            <div
+              id={id}
+              className={styles.point}
+              key={index}
+              style={{ left: `${x}px`, top: `${y}px` }}
+            ></div>
+          ))}
+          <div
+            id="mouse"
+            style={{ width: `${mouseRange * 2}px`, height: `${mouseRange * 2}px` }}
+            className={styles.mouse}
+          ></div>
+        </div>
+        <div className={styles.toolbar}>
+          <div>toobar1</div>
+          <div>toobar2</div>
+        </div>
       </div>
     );
   }

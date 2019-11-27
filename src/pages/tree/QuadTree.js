@@ -79,7 +79,6 @@ export class QuadTree {
     );
     const distance = getDistance(center, middlePoint);
     return distance <= (Math.sqrt(2) * this.sideLen) / 2 + radius;
-    // return true;
   }
 
   /**
