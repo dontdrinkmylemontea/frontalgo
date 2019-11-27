@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-// import { connect } from 'dva';
-// import {Spin} from 'antd';
 import { Point, QuadTree } from './QuadTree';
 import styles from './Tree.less';
 
@@ -9,12 +7,35 @@ const background = {
   height: 500,
 };
 
-const starCount = 1000;
-const mouseRange = 50;
+const shapeTools = [
+  {
+    name: '圆形',
+    value: 'circle',
+  },
+  {
+    name: '矩形',
+    value: 'rectangle',
+  },
+];
 
-function generatePoints(count) {
+const rangeTooles = [
+  {
+    name: '圈定范围',
+    value: 'mouseRange',
+  },
+  {
+    name: '点个数',
+    value: 'starCount',
+  },
+  {
+    name: '树的单节点容量',
+    value: 'nodeCapacity',
+  },
+];
+
+function generatePoints(count, nodeCapacity) {
   const arr = [];
-  const quadTree = new QuadTree(new Point(0, 0), background.width);
+  const quadTree = new QuadTree(new Point(0, 0), background.width, nodeCapacity);
   for (let i = 0; i < count; i += 1) {
     const newPoint = new Point(Math.random() * background.width, Math.random() * background.height);
     arr.push(newPoint);
@@ -28,24 +49,33 @@ class Tree extends Component {
     super(props);
     this.state = {
       points: [],
+      starCount: 1,
+      mouseRange: 50,
+      nodeCapacity: 4,
     };
     this.quadTree = undefined;
     this.prevPoints = [];
   }
 
   componentDidMount() {
-    const { arr, quadTree } = generatePoints(starCount);
-    this.setState({
-      points: arr,
-    });
-    this.quadTree = quadTree;
+    this.resetTree();
   }
 
   componentWillUnmount() {
     this.removeListener();
   }
 
+  resetTree = () => {
+    const { starCount, nodeCapacity } = this.state;
+    const { arr, quadTree } = generatePoints(starCount, nodeCapacity);
+    this.setState({
+      points: arr,
+    });
+    this.quadTree = quadTree;
+  };
+
   mouseMoveHandler = ({ layerX: x, layerY: y }) => {
+    const { mouseRange } = this.state;
     const mouse = document.getElementById('mouse');
     if (mouse) {
       mouse.style.transform = `translate(${x - mouseRange + 4}px, ${y - mouseRange + 4}px)`;
@@ -83,8 +113,22 @@ class Tree extends Component {
     window.onmousemove = null;
   };
 
+  toggleShape = value => {
+    console.log('value = ', value);
+  };
+
+  changeRangeValue = ({ charCode, currentTarget: { value } }, name) => {
+    if (charCode !== 13) return;
+    this.setState(
+      {
+        [name]: Number(value),
+      },
+      this.resetTree,
+    );
+  };
+
   render() {
-    const { points } = this.state;
+    const { points, mouseRange } = this.state;
     return (
       <div
         className={styles.root}
@@ -113,8 +157,25 @@ class Tree extends Component {
           ></div>
         </div>
         <div className={styles.toolbar}>
-          <div>toobar1</div>
-          <div>toobar2</div>
+          <div className={styles.toolbox}>
+            {shapeTools.map(({ name, value }) => (
+              <div className={styles.toolItem} onClick={() => this.toggleShape(value)} key={value}>
+                <span>{name}</span>
+              </div>
+            ))}
+          </div>
+          <div className={styles.toolbox}>
+            {rangeTooles.map(({ name, value }) => (
+              <div className={styles.toolItem} style={{ cursor: 'default' }} key={value}>
+                {name}：
+                <input
+                  defaultValue={this.state[value]}
+                  onKeyPress={e => this.changeRangeValue(e, value)}
+                  onPaste={() => false}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );

@@ -1,4 +1,4 @@
-const nodeContainer = 3;
+const nodeContainer = 4;
 
 /**
  * 获取两点之间的距离
@@ -12,11 +12,12 @@ function getDistance(point1, point2) {
 }
 
 export class QuadTree {
-  constructor(point, length) {
+  constructor(point, length, nodeCount = nodeContainer) {
     this.basePoint = point;
     this.sideLen = length;
     this.points = [];
     this.divided = false;
+    this.nodeCount = nodeCount;
   }
 
   /**
@@ -39,13 +40,22 @@ export class QuadTree {
     this.divided = true;
     const point = this.basePoint;
     const length = this.sideLen;
-    this.northWest = new QuadTree(point, length / 2);
-    this.northEast = new QuadTree(new Point(point.x + length / 2, point.y), length / 2);
+    this.northWest = new QuadTree(point, length / 2, this.nodeCount);
+    this.northEast = new QuadTree(
+      new Point(point.x + length / 2, point.y),
+      length / 2,
+      this.nodeCount,
+    );
     this.southEest = new QuadTree(
       new Point(point.x + length / 2, point.y + length / 2),
       length / 2,
+      this.nodeCount,
     );
-    this.southWest = new QuadTree(new Point(point.x, point.y + length / 2), length / 2);
+    this.southWest = new QuadTree(
+      new Point(point.x, point.y + length / 2),
+      length / 2,
+      this.nodeCount,
+    );
   }
 
   /**
@@ -56,9 +66,9 @@ export class QuadTree {
     if (!this.isInside(point)) {
       return false;
     }
-    if (!this.divided && this.points.length < nodeContainer) {
+    if (!this.divided && this.points.length < this.nodeCount) {
       return this.points.push(point);
-    } else if (!this.divided && this.points.length === nodeContainer) {
+    } else if (!this.divided && this.points.length === this.nodeCount) {
       this.divideTree();
     }
     this.northWest.addPoint(point);
