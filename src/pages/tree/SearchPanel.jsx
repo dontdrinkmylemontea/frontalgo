@@ -5,11 +5,22 @@ import styles from './SearchPanel.less';
 import CanvasPanel from './CanvasPanel';
 
 const background = {
-  width: 595,
+  width: 1200,
   height: 500,
 };
 
+const colorMapper = {
+  background: '#003366',
+  point: '#004c99',
+  active: '#ffbf00',
+  stroke: '#339966',
+};
+
 const shapeTools = [
+  {
+    name: '线条',
+    value: 'line',
+  },
   {
     name: '圆形',
     value: 'circle',
@@ -54,7 +65,7 @@ class SearchPanel extends Component {
       starCount: 1000,
       mouseRange: 50,
       nodeCapacity: 4,
-      mouseShape: 'circle',
+      mouseShape: shapeTools[0].value,
     };
     this.quadTree = undefined;
     this.prevPoints = [];
@@ -110,6 +121,7 @@ class SearchPanel extends Component {
           mouseRange={mouseRange}
           quadTree={this.quadTree}
           mouseShape={mouseShape}
+          colorMapper={colorMapper}
         />
         <div className={styles.toolbar}>
           <div className={styles.toolbox}>

@@ -31,7 +31,7 @@ class CanvasPanel extends Component {
     }
   }
 
-  renderPoints = (points, flag, fillStyle = '#fff', pointSize = 3) => {
+  renderPoints = (points, flag, fillStyle = this.props.colorMapper.point, pointSize = 3) => {
     const ctx = this.getContext();
     if (!flag) this.clearCanvas();
     points.forEach(({ x, y }) => {
@@ -57,25 +57,28 @@ class CanvasPanel extends Component {
 
   mouseMoveHandler = ({ layerX: x, layerY: y }) => {
     // 重新画点
-    const { points } = this.props;
+    const { points, colorMapper, mouseRange, quadTree, mouseShape } = this.props;
     this.renderPoints(points);
     // 画鼠标形状
-    const { mouseRange, quadTree, mouseShape } = this.props;
     const ctx = this.getContext();
     if (mouseShape === 'circle') {
+      // 圆形
       ctx.beginPath();
       ctx.arc(x, y, mouseRange, 0, 2 * Math.PI);
-      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = colorMapper.stroke;
       ctx.stroke();
 
       // 画圈中的点
       if (!quadTree) return;
       const inRange = quadTree.getPointsByCircle(new Point(x, y), mouseRange);
-      this.renderPoints(inRange, true, 'yellow', 5);
+      this.renderPoints(inRange, true, colorMapper.active, 5);
     } else if (mouseShape === 'rectangle') {
+      // 矩形
       ctx.beginPath();
       ctx.rect(x - mouseRange, y - mouseRange, mouseRange * 2, mouseRange * 2);
-      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = colorMapper.stroke;
       ctx.stroke();
 
       // 画圈中的点
@@ -85,7 +88,7 @@ class CanvasPanel extends Component {
         mouseRange * 2,
         mouseRange * 2,
       );
-      this.renderPoints(inRange, true, 'yellow', 5);
+      this.renderPoints(inRange, true, colorMapper.active, 5);
     }
   };
 
@@ -98,7 +101,7 @@ class CanvasPanel extends Component {
   };
 
   render() {
-    const { background } = this.props;
+    const { background, colorMapper } = this.props;
     return (
       <canvas
         className={styles.root}
@@ -107,6 +110,9 @@ class CanvasPanel extends Component {
         height={background.height + 10}
         onMouseEnter={this.addListener}
         onMouseOut={this.removeListener}
+        style={{
+          backgroundColor: colorMapper.background,
+        }}
       ></canvas>
     );
   }

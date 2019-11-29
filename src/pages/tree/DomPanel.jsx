@@ -18,7 +18,7 @@ class DomPanel extends Component {
   }
 
   mouseMoveHandler = ({ layerX: x, layerY: y }) => {
-    const { mouseRange, quadTree, mouseShape } = this.props;
+    const { mouseRange, quadTree, mouseShape, colorMapper } = this.props;
     const mouse = document.getElementById(this.mouseId);
     if (mouse) {
       mouse.style.transform = `translate(${x - mouseRange + 4}px, ${y - mouseRange + 4}px)`;
@@ -36,7 +36,7 @@ class DomPanel extends Component {
       this.prevPoints.forEach(p => {
         const pointdom = document.getElementById(p.id);
         if (pointdom) {
-          pointdom.style.backgroundColor = 'white';
+          pointdom.style.backgroundColor = colorMapper.point;
           pointdom.style.width = '5px';
           pointdom.style.height = '5px';
         }
@@ -46,7 +46,7 @@ class DomPanel extends Component {
       points.forEach(p => {
         const pointdom = document.getElementById(p.id);
         if (pointdom) {
-          pointdom.style.backgroundColor = 'yellow';
+          pointdom.style.backgroundColor = colorMapper.active;
           pointdom.style.width = '10px';
           pointdom.style.height = '10px';
         }
@@ -64,11 +64,11 @@ class DomPanel extends Component {
   };
 
   render() {
-    const { background, points, mouseRange, mouseShape } = this.props;
+    const { background, points, mouseRange, mouseShape, colorMapper } = this.props;
     return (
       <div
         className={styles.container}
-        style={{ height: `${background.height + 10}px` }}
+        style={{ height: `${background.height + 10}px`, backgroundColor: colorMapper.background }}
         onMouseEnter={this.addListener}
         onMouseLeave={this.removeListener}
       >
@@ -77,12 +77,21 @@ class DomPanel extends Component {
             id={id}
             className={styles.point}
             key={index}
-            style={{ left: `${x}px`, top: `${y}px`, pointerEvents: 'none' }}
+            style={{
+              left: `${x}px`,
+              top: `${y}px`,
+              pointerEvents: 'none',
+              backgroundColor: colorMapper.point,
+            }}
           ></div>
         ))}
         <div
           id={this.mouseId}
-          style={{ width: `${mouseRange * 2}px`, height: `${mouseRange * 2}px` }}
+          style={{
+            width: `${mouseRange * 2}px`,
+            height: `${mouseRange * 2}px`,
+            border: `2px solid ${colorMapper.stroke}`,
+          }}
           className={styles[`mouse_${mouseShape}`]}
         ></div>
       </div>
