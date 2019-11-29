@@ -70,7 +70,7 @@ class DomPanel extends Component {
             id={id}
             className={styles.point}
             key={index}
-            style={{ left: `${x}px`, top: `${y}px` }}
+            style={{ left: `${x}px`, top: `${y}px`, pointerEvents: 'none' }}
           ></div>
         ))}
         <div
