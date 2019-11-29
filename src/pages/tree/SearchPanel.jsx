@@ -51,9 +51,10 @@ class SearchPanel extends Component {
     super(props);
     this.state = {
       points: [],
-      starCount: 1,
+      starCount: 1000,
       mouseRange: 50,
       nodeCapacity: 4,
+      mouseShape: 'circle',
     };
     this.quadTree = undefined;
     this.prevPoints = [];
@@ -73,7 +74,9 @@ class SearchPanel extends Component {
   };
 
   toggleShape = value => {
-    console.log('value = ', value);
+    this.setState({
+      mouseShape: value,
+    });
   };
 
   changeRangeValue = ({ charCode, currentTarget: { value } }, name) => {
@@ -90,7 +93,7 @@ class SearchPanel extends Component {
   };
 
   render() {
-    const { points, mouseRange } = this.state;
+    const { points, mouseRange, mouseShape } = this.state;
     const { type } = this.props;
     const Panel = type === 'canvas' ? CanvasPanel : DomPanel;
     return (
@@ -106,11 +109,16 @@ class SearchPanel extends Component {
           points={points}
           mouseRange={mouseRange}
           quadTree={this.quadTree}
+          mouseShape={mouseShape}
         />
         <div className={styles.toolbar}>
           <div className={styles.toolbox}>
             {shapeTools.map(({ name, value }) => (
-              <div className={styles.toolItem} onClick={() => this.toggleShape(value)} key={value}>
+              <div
+                className={`${styles.toolItem} ${value === mouseShape ? styles.active : ''}`}
+                onClick={() => this.toggleShape(value)}
+                key={value}
+              >
                 <span>{name}</span>
               </div>
             ))}

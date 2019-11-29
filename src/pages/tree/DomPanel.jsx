@@ -18,13 +18,20 @@ class DomPanel extends Component {
   }
 
   mouseMoveHandler = ({ layerX: x, layerY: y }) => {
-    const { mouseRange, quadTree } = this.props;
+    const { mouseRange, quadTree, mouseShape } = this.props;
     const mouse = document.getElementById(this.mouseId);
     if (mouse) {
       mouse.style.transform = `translate(${x - mouseRange + 4}px, ${y - mouseRange + 4}px)`;
     }
     if (!quadTree) return;
-    const points = quadTree.getPointsByCircle(new Point(x, y), mouseRange);
+    const points =
+      mouseShape === 'circle'
+        ? quadTree.getPointsByCircle(new Point(x, y), mouseRange)
+        : quadTree.getPointsByRectangle(
+            new Point(x - mouseRange, y - mouseRange),
+            mouseRange * 2,
+            mouseRange * 2,
+          );
     if (this.prevPoints.length > 0) {
       this.prevPoints.forEach(p => {
         const pointdom = document.getElementById(p.id);
@@ -57,7 +64,7 @@ class DomPanel extends Component {
   };
 
   render() {
-    const { background, points, mouseRange } = this.props;
+    const { background, points, mouseRange, mouseShape } = this.props;
     return (
       <div
         className={styles.container}
@@ -76,7 +83,7 @@ class DomPanel extends Component {
         <div
           id={this.mouseId}
           style={{ width: `${mouseRange * 2}px`, height: `${mouseRange * 2}px` }}
-          className={styles.mouse}
+          className={styles[`mouse_${mouseShape}`]}
         ></div>
       </div>
     );

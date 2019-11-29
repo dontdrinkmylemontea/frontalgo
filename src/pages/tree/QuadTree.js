@@ -144,12 +144,12 @@ export class QuadTree {
         point.y <= rectanglePoint.y + height
       );
     }
-    const points = this.points.filter(p => inRectangleRange(p));
+    let points = this.points.filter(p => inRectangleRange(p));
     if (this.divided) {
-      points.concat(this.northWest.getPointsByRectangle(rectanglePoint, width, height));
-      points.concat(this.northEast.getPointsByRectangle(rectanglePoint, width, height));
-      points.concat(this.southEest.getPointsByRectangle(rectanglePoint, width, height));
-      points.concat(this.southWest.getPointsByRectangle(rectanglePoint, width, height));
+      points = points.concat(this.northWest.getPointsByRectangle(rectanglePoint, width, height));
+      points = points.concat(this.northEast.getPointsByRectangle(rectanglePoint, width, height));
+      points = points.concat(this.southEest.getPointsByRectangle(rectanglePoint, width, height));
+      points = points.concat(this.southWest.getPointsByRectangle(rectanglePoint, width, height));
     }
     return points;
   }

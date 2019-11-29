@@ -60,16 +60,33 @@ class CanvasPanel extends Component {
     const { points } = this.props;
     this.renderPoints(points);
     // 画鼠标形状
-    const { mouseRange, quadTree } = this.props;
+    const { mouseRange, quadTree, mouseShape } = this.props;
     const ctx = this.getContext();
-    ctx.beginPath();
-    ctx.arc(x, y, mouseRange, 0, 2 * Math.PI);
-    ctx.strokeStyle = '#fff';
-    ctx.stroke();
-    // 画圈中的点
-    if (!quadTree) return;
-    const inRange = quadTree.getPointsByCircle(new Point(x, y), mouseRange);
-    this.renderPoints(inRange, true, 'yellow', 5);
+    if (mouseShape === 'circle') {
+      ctx.beginPath();
+      ctx.arc(x, y, mouseRange, 0, 2 * Math.PI);
+      ctx.strokeStyle = '#fff';
+      ctx.stroke();
+
+      // 画圈中的点
+      if (!quadTree) return;
+      const inRange = quadTree.getPointsByCircle(new Point(x, y), mouseRange);
+      this.renderPoints(inRange, true, 'yellow', 5);
+    } else if (mouseShape === 'rectangle') {
+      ctx.beginPath();
+      ctx.rect(x - mouseRange, y - mouseRange, mouseRange * 2, mouseRange * 2);
+      ctx.strokeStyle = '#fff';
+      ctx.stroke();
+
+      // 画圈中的点
+      if (!quadTree) return;
+      const inRange = quadTree.getPointsByRectangle(
+        new Point(x - mouseRange, y - mouseRange),
+        mouseRange * 2,
+        mouseRange * 2,
+      );
+      this.renderPoints(inRange, true, 'yellow', 5);
+    }
   };
 
   addListener = () => {
