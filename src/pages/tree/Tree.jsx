@@ -6,7 +6,7 @@ class Tree extends Component {
   render() {
     return (
       <div className={styles.root}>
-        {/* <SearchPanel type="dom" /> */}
+        <SearchPanel type="dom" />
         <SearchPanel type="canvas" />
       </div>
     );

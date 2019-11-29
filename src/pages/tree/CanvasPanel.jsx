@@ -31,12 +31,12 @@ class CanvasPanel extends Component {
     }
   }
 
-  renderPoints = (points, flag, fillStyle = '#fff') => {
+  renderPoints = (points, flag, fillStyle = '#fff', pointSize = 3) => {
     const ctx = this.getContext();
     if (!flag) this.clearCanvas();
     points.forEach(({ x, y }) => {
       ctx.beginPath();
-      ctx.arc(x, y, 5, 0, 2 * Math.PI);
+      ctx.arc(x, y, pointSize, 0, 2 * Math.PI);
       ctx.fillStyle = fillStyle;
       ctx.fill();
     });
@@ -69,7 +69,7 @@ class CanvasPanel extends Component {
     // 画圈中的点
     if (!quadTree) return;
     const inRange = quadTree.getPointsByCircle(new Point(x, y), mouseRange);
-    this.renderPoints(inRange, true, 'yellow');
+    this.renderPoints(inRange, true, 'yellow', 5);
   };
 
   addListener = () => {
