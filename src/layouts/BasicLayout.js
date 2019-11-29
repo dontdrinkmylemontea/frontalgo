@@ -52,46 +52,43 @@ class BasicLayout extends Component {
       return null;
     }
     return pathname !== '/login' ? (
-      <div className={styles.normal}>
-        <Layout style={{ minHeight: '100vh' }}>
-          <Sider collapsible>
-            <div className="logo" />
-            <Menu
-              onClick={this.onClickMenu}
-              theme="dark"
-              defaultSelectedKeys={MenuData.filter(data => data.path === pathname).map(data =>
-                String(data.index),
-              )}
-              style={{ width: '200px', position: 'fixed' }}
-              mode="inline"
-            >
-              {MenuData.map(menu => (
-                <Menu.Item key={String(menu.index)}>
-                  <Icon type={menu.icon} />
-                  <span>{menu.name}</span>
-                </Menu.Item>
-              ))}
-            </Menu>
-          </Sider>
-          <Layout>
-            <Header
-              style={{
-                background: '#fff',
-                padding: '0 20px',
-                display: 'flex',
-                justifyContent: 'flex-end',
-              }}
-            >
-              <a onClick={this.logout}>退出登录</a>
-            </Header>
-            <Content style={{ margin: '0 16px' }}>
-              <div style={{ padding: 24, background: '#fff', minHeight: 'calc(100vh - 84px)' }}>
-                {auth.auth === 1 ? children : null}
-              </div>
-            </Content>
-          </Layout>
+      <Layout style={{ minHeight: '100vh' }}>
+        <Sider collapsible>
+          <div className="logo" />
+          <Menu
+            onClick={this.onClickMenu}
+            theme="dark"
+            defaultSelectedKeys={MenuData.filter(data => data.path === pathname).map(data =>
+              String(data.index),
+            )}
+            mode="inline"
+          >
+            {MenuData.map(menu => (
+              <Menu.Item key={String(menu.index)}>
+                <Icon type={menu.icon} />
+                <span>{menu.name}</span>
+              </Menu.Item>
+            ))}
+          </Menu>
+        </Sider>
+        <Layout>
+          <Header
+            style={{
+              background: '#fff',
+              padding: '0 20px',
+              display: 'flex',
+              justifyContent: 'flex-end',
+            }}
+          >
+            <a onClick={this.logout}>退出登录</a>
+          </Header>
+          <Content style={{ margin: '0 16px' }}>
+            <div style={{ padding: 24, background: '#fff', minHeight: 'calc(100vh - 84px)' }}>
+              {auth.auth === 1 ? children : null}
+            </div>
+          </Content>
         </Layout>
-      </div>
+      </Layout>
     ) : (
       children
     );

@@ -1,0 +1,29 @@
+.root {
+  .type {
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.85);
+    margin: 4px 0;
+  }
+  .toolbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0 20px 0;
+    .toolbox {
+      border: 1px solid #e8e8e8;
+      border-right: none;
+      padding: 0;
+      border-radius: 2px;
+      display: flex;
+      .toolItem {
+        border-right: 1px solid #e8e8e8;
+        padding: 4px 12px;
+        color: rgba(0, 0, 0, 0.65);
+        cursor: pointer;
+        input {
+          width: 50px;
+        }
+      }
+    }
+  }
+}
