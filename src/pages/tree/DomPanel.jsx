@@ -43,34 +43,32 @@ class DomPanel extends Component {
         }
       });
     }
-    if (points.length > 0) {
-      points.forEach(p => {
-        const pointdom = document.getElementById(p.id);
-        if (pointdom) {
-          pointdom.style.backgroundColor = colorMapper.active;
-          pointdom.style.width = '10px';
-          pointdom.style.height = '10px';
-        }
+    points.forEach(p => {
+      const pointdom = document.getElementById(p.id);
+      if (pointdom) {
+        pointdom.style.backgroundColor = colorMapper.active;
+        pointdom.style.width = '10px';
+        pointdom.style.height = '10px';
+      }
+    });
+
+    if (mouseShape === 'line') {
+      const svgDom = document.getElementById(this.svgId);
+      const children = svgDom.childNodes;
+      children.forEach(c => {
+        svgDom.removeChild(c);
       });
 
-      if (mouseShape === 'line') {
-        const svgDom = document.getElementById(this.svgId);
-        const children = svgDom.childNodes;
-        children.forEach(c => {
-          svgDom.removeChild(c);
-        });
-
-        points.forEach(({ x: px, y: py }) => {
-          const lineDom = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-          lineDom.setAttribute('x1', px + 2);
-          lineDom.setAttribute('y1', py + 2);
-          lineDom.setAttribute('x2', x);
-          lineDom.setAttribute('y2', y);
-          lineDom.setAttribute('stroke', colorMapper.stroke);
-          lineDom.setAttribute('strokeWidth', 2);
-          svgDom.appendChild(lineDom);
-        });
-      }
+      points.forEach(({ x: px, y: py }) => {
+        const lineDom = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        lineDom.setAttribute('x1', px + 2);
+        lineDom.setAttribute('y1', py + 2);
+        lineDom.setAttribute('x2', x);
+        lineDom.setAttribute('y2', y);
+        lineDom.setAttribute('stroke', colorMapper.stroke);
+        lineDom.setAttribute('strokeWidth', 2);
+        svgDom.appendChild(lineDom);
+      });
     }
     this.prevPoints = points;
   };
