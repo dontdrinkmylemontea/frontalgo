@@ -89,6 +89,19 @@ class CanvasPanel extends Component {
         mouseRange * 2,
       );
       this.renderPoints(inRange, true, colorMapper.active, 5);
+    } else if (mouseShape === 'line') {
+      // 线条
+      if (!quadTree) return;
+      const inRange = quadTree.getPointsByCircle(new Point(x, y), mouseRange);
+      this.renderPoints(inRange, true, colorMapper.active, 5);
+      inRange.forEach(({ x: px, y: py }) => {
+        ctx.beginPath();
+        ctx.moveTo(px, py);
+        ctx.lineTo(x, y);
+        ctx.strokeStyle = colorMapper.stroke;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      });
     }
   };
 
