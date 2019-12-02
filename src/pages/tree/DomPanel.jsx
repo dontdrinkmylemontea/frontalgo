@@ -10,6 +10,7 @@ class DomPanel extends Component {
     super(props);
     this.prevPoints = [];
     this.mouseId = mouseId;
+    this.svgId = `svg-${mouseId}`;
     mouseId += 1;
   }
 
@@ -51,6 +52,25 @@ class DomPanel extends Component {
           pointdom.style.height = '10px';
         }
       });
+
+      if (mouseShape === 'line') {
+        const svgDom = document.getElementById(this.svgId);
+        const children = svgDom.childNodes;
+        children.forEach(c => {
+          svgDom.removeChild(c);
+        });
+
+        points.forEach(({ x: px, y: py }) => {
+          const lineDom = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          lineDom.setAttribute('x1', px + 2);
+          lineDom.setAttribute('y1', py + 2);
+          lineDom.setAttribute('x2', x);
+          lineDom.setAttribute('y2', y);
+          lineDom.setAttribute('stroke', colorMapper.stroke);
+          lineDom.setAttribute('strokeWidth', 2);
+          svgDom.appendChild(lineDom);
+        });
+      }
     }
     this.prevPoints = points;
   };
@@ -85,15 +105,20 @@ class DomPanel extends Component {
             }}
           ></div>
         ))}
-        <div
-          id={this.mouseId}
-          style={{
-            width: `${mouseRange * 2}px`,
-            height: `${mouseRange * 2}px`,
-            border: `2px solid ${colorMapper.stroke}`,
-          }}
-          className={styles[`mouse_${mouseShape}`]}
-        ></div>
+        {mouseShape !== 'line' ? (
+          <div
+            id={this.mouseId}
+            style={{
+              width: `${mouseRange * 2}px`,
+              height: `${mouseRange * 2}px`,
+              border: `2px solid ${colorMapper.stroke}`,
+            }}
+            className={styles[`mouse_${mouseShape}`]}
+          ></div>
+        ) : null}
+        {mouseShape === 'line' ? (
+          <svg id={this.svgId} style={{ width: '100%', height: '100%' }}></svg>
+        ) : null}
       </div>
     );
   }
