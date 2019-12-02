@@ -15,6 +15,12 @@ export default [
     index: 4,
     name: '平面查询',
     path: '/tree',
+    icon: 'search',
+  },
+  {
+    index: 5,
+    name: '字典树',
+    path: '/dictionaries',
     icon: 'book',
   },
   {
