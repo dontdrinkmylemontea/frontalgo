@@ -29,6 +29,10 @@ class Dictionaries extends Component {
             ))}
           </div>
         </div>
+        <Divider />
+        <div className={styles.box}>
+          <div className={styles.subTitle}>实现</div>
+        </div>
       </div>
     );
   }
