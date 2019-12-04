@@ -47,10 +47,11 @@ class BasicLayout extends Component {
   render() {
     const { children, history, auth } = this.props;
     const { pathname } = history.location;
-    if (auth.auth === -1 && pathname !== '/login') {
-      router.push('/login');
-      return null;
-    }
+    // if (auth.auth === -1 && pathname !== '/login') {
+    //   router.push('/login');
+    //   return null;
+    // }
+    if (auth.auth !== 1 && pathname !== '/login') return null;
     return pathname !== '/login' ? (
       <Layout style={{ minHeight: '100vh' }}>
         <Sider collapsible>

@@ -10,7 +10,6 @@ export default {
         antd: true,
         dva: true,
         dynamicImport: false,
-        title: 'FrontAlgo',
         dll: false,
 
         routes: {
